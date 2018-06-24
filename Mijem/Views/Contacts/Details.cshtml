@@ -1,0 +1,50 @@
+﻿@model Mijem.contact
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>contact</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.phone)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.phone)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.birth_date)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.birth_date)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.contact_type.type_of_contact)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.contact_type.type_of_contact)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.contact_id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

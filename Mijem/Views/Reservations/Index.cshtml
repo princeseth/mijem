@@ -1,0 +1,87 @@
+﻿@model IEnumerable<Mijem.reservation>
+
+@{
+    ViewBag.Title = "Index";
+}
+@Html.Hidden("RedirectTo", Url.Action("Index", "ContactView"));
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+</head>
+<div class="row header-class">
+    <div class="col-md-4">
+        <h4 style="color:red">Reservation List</h4>
+    </div>
+    <div class="form col-md-offset-4">
+        <div class="row submit-btn">
+            <a href="/ContactView/Index" class="btn btn-default square-btn">CREATE RESERVATION</a>
+        </div>
+    </div>
+
+</div>
+<hr />
+<div class="dropdown text-info">
+    <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">
+        Sort By
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu">
+        <li>@Html.ActionLink("By Date Ascending", "Index", new { sortOrder = "date_asc" })</li>
+        <li>@Html.ActionLink("By Date Descending", "Index", new { sortOrder = "date_desc" })</li>
+        <li>@Html.ActionLink("By Alphabetic Ascending", "Index", new { sortOrder = "name_asc" })</li>
+        <li>@Html.ActionLink("By Alphabetic Descending", "Index", new { sortOrder = "name_desc" })</li>
+    </ul>
+</div>
+<div class="table-responsive">
+    <table class="table table-bordered" id="tabData">
+        <thead>
+            <tr>
+                <th>
+                   Reservation Date
+                </th>
+                <th>
+                   Contact Name
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.reservation_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.contact.name)
+                    </td>
+                    <td>
+                       <button>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.reservation_id })
+                        </button>                   
+                            <button>
+                        @Html.ActionLink("Delete", "Delete", new { id = item.reservation_id })
+                                </button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</div>
+@section Scripts{
+    
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $("#tabData").dataTable({
+                searching: false,
+                paging: true,
+                bLengthChange: false,
+                ordering: false,
+                responsive: true,
+                
+            });
+        });
+    </script>
+}

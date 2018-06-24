@@ -1,0 +1,90 @@
+﻿@model Mijem.Models.ContactViewModel
+
+@{
+    ViewBag.Title = "Create";
+}
+<head>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+</head>
+
+
+
+@using (Html.BeginForm("Index", "ContactView", FormMethod.Post))
+{
+    @Html.Hidden("RedirectTo", Url.Action("Index", "Reservations"));
+
+    <div class="row header-class">
+        <div class="col-md-6 col-xs-6">
+            <h4 style="color:red">Create Reservation </h4>
+        </div>
+        <div class="col-md-6 col-xs-6">
+            <div style="float:right;">
+                <a href="/Reservations/Index" class="btn btn-primary btn-sm square-btn">RESERVATION LIST</a>
+            </div>
+        </div>
+
+    </div>
+    <div class="form-horizontal">
+         <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="col-md-3 box">
+                <div class="form-group">
+
+                    <input type="text" name="name" id="nameAutoComplete" class="form-control square-btn" placeholder="Contact Name" required>
+                    @Html.ValidationMessageFor(model => model.name, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+            <div class="col-md-3 box">
+                <div class="form-group">
+
+                    @Html.DropDownListFor(model => model.contact_type_id, ViewBag.contactTypeList as SelectList, "Contact Type", htmlAttributes: new { @class = "form-control square-btn" })
+                    @Html.ValidationMessageFor(model => model.contact_type_id, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 box">
+                <div class="form-group">
+
+                    <input type="text" name="phone" id="phone" class="form-control square-btn" placeholder="Phone" minlength="10" maxlength="10" required>
+                    @Html.ValidationMessageFor(model => model.phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="col-md-3 box">
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.birth_date, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+
+                    @Html.ValidationMessageFor(model => model.birth_date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-12 col-xs-10">
+                <textarea name="description"></textarea>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="submit-btn">
+                <input type="submit" value="SEND" class="btn btn-danger square-btn" />
+            </div>
+        </div>
+    </div>
+    <div>
+        <button class="btn btn-default square-btn" data-toggle="collapse" onclick="showList()">Contact List</button>
+ 
+        
+    </div>
+    <br />
+    <table id="displayList" class="table table-bordered"></table>
+
+}
+<script src='https://cloud.tinymce.com/stable/tinymce.min.js'></script>
+
+<script defer src="https://use.fontawesome.com/releases/v5.0.13/js/all.js" integrity="sha384-xymdQtn1n3lH2wcu0qhcdaOpQwyoarkgLVxC/wZ5q7h9gHtxICrpcaSUfygqZGOe" crossorigin="anonymous"></script>
+@section Scripts {
+    @Scripts.Render("~/Scripts/js/createReservation.js")
+    @Scripts.Render("~/bundles/jqueryval")
+}

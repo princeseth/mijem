@@ -1,0 +1,384 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="mijemModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="contact">
+          <Key>
+            <PropertyRef Name="contact_id" />
+          </Key>
+          <Property Name="contact_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="name" Type="nvarchar" MaxLength="30" Nullable="false" />
+          <Property Name="phone" Type="varchar" MaxLength="16" />
+          <Property Name="birth_date" Type="date" Nullable="false" />
+          <Property Name="contact_type_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="contact_type">
+          <Key>
+            <PropertyRef Name="contact_type_id" />
+          </Key>
+          <Property Name="contact_type_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="type_of_contact" Type="varchar" MaxLength="30" Nullable="false" />
+        </EntityType>
+        <EntityType Name="reservation">
+          <Key>
+            <PropertyRef Name="reservation_id" />
+          </Key>
+          <Property Name="reservation_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="contact_id" Type="int" Nullable="false" />
+          <Property Name="description" Type="varchar(max)" />
+          <Property Name="reservation_date" Type="datetime" />
+        </EntityType>
+        <EntityType Name="sysdiagrams">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="principal_id" Type="int" Nullable="false" />
+          <Property Name="diagram_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="version" Type="int" />
+          <Property Name="definition" Type="varbinary(max)" />
+        </EntityType>
+        <Association Name="FK__contact__contact__3E52440B">
+          <End Role="contact_type" Type="Self.contact_type" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="contact" Type="Self.contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact_type">
+              <PropertyRef Name="contact_type_id" />
+            </Principal>
+            <Dependent Role="contact">
+              <PropertyRef Name="contact_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__conta__412EB0B6">
+          <End Role="contact" Type="Self.contact" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservation" Type="Self.reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact">
+              <PropertyRef Name="contact_id" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="contact_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="fn_diagramobjects" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int" />
+        <Function Name="SearchContact" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="name" Type="varchar" Mode="In" />
+        </Function>
+        <Function Name="sp_alterdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_creatediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="version" Type="int" Mode="In" />
+          <Parameter Name="definition" Type="varbinary(max)" Mode="In" />
+        </Function>
+        <Function Name="sp_dropdiagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagramdefinition" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_helpdiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="sp_renamediagram" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="diagramname" Type="nvarchar" Mode="In" />
+          <Parameter Name="owner_id" Type="int" Mode="In" />
+          <Parameter Name="new_diagramname" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_upgraddiagrams" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="mijemModelStoreContainer">
+          <EntitySet Name="contact" EntityType="Self.contact" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="contact_type" EntityType="Self.contact_type" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="reservation" EntityType="Self.reservation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__contact__contact__3E52440B" Association="Self.FK__contact__contact__3E52440B">
+            <End Role="contact_type" EntitySet="contact_type" />
+            <End Role="contact" EntitySet="contact" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__conta__412EB0B6" Association="Self.FK__reservati__conta__412EB0B6">
+            <End Role="contact" EntitySet="contact" />
+            <End Role="reservation" EntitySet="reservation" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="mijemModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="contact">
+          <Key>
+            <PropertyRef Name="contact_id" />
+          </Key>
+          <Property Name="contact_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="phone" Type="String" MaxLength="16" FixedLength="false" Unicode="false" />
+          <Property Name="birth_date" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="contact_type_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="contact_type" Relationship="Self.FK__contact__contact__3E52440B" FromRole="contact" ToRole="contact_type" />
+          <NavigationProperty Name="reservations" Relationship="Self.FK__reservati__conta__412EB0B6" FromRole="contact" ToRole="reservation" />
+        </EntityType>
+        <EntityType Name="contact_type">
+          <Key>
+            <PropertyRef Name="contact_type_id" />
+          </Key>
+          <Property Name="contact_type_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="type_of_contact" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="contacts" Relationship="Self.FK__contact__contact__3E52440B" FromRole="contact_type" ToRole="contact" />
+        </EntityType>
+        <EntityType Name="reservation">
+          <Key>
+            <PropertyRef Name="reservation_id" />
+          </Key>
+          <Property Name="reservation_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="reservation_date" Type="DateTime" Precision="3" />
+          <Property Name="contact_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="contact" Relationship="Self.FK__reservati__conta__412EB0B6" FromRole="reservation" ToRole="contact" />
+          <Property Name="description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="sysdiagram">
+          <Key>
+            <PropertyRef Name="diagram_id" />
+          </Key>
+          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="principal_id" Type="Int32" Nullable="false" />
+          <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="version" Type="Int32" />
+          <Property Name="definition" Type="Binary" MaxLength="Max" FixedLength="false" />
+        </EntityType>
+        <Association Name="FK__contact__contact__3E52440B">
+          <End Role="contact_type" Type="Self.contact_type" Multiplicity="1" />
+          <End Role="contact" Type="Self.contact" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact_type">
+              <PropertyRef Name="contact_type_id" />
+            </Principal>
+            <Dependent Role="contact">
+              <PropertyRef Name="contact_type_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__reservati__conta__412EB0B6">
+          <End Role="contact" Type="Self.contact" Multiplicity="1" >
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="reservation" Type="Self.reservation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="contact">
+              <PropertyRef Name="contact_id" />
+            </Principal>
+            <Dependent Role="reservation">
+              <PropertyRef Name="contact_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="mijemEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="contacts" EntityType="Self.contact" />
+          <EntitySet Name="contact_type" EntityType="Self.contact_type" />
+          <EntitySet Name="reservations" EntityType="Self.reservation" />
+          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagram" />
+          <AssociationSet Name="FK__contact__contact__3E52440B" Association="Self.FK__contact__contact__3E52440B">
+            <End Role="contact_type" EntitySet="contact_type" />
+            <End Role="contact" EntitySet="contacts" />
+          </AssociationSet>
+          <AssociationSet Name="FK__reservati__conta__412EB0B6" Association="Self.FK__reservati__conta__412EB0B6">
+            <End Role="contact" EntitySet="contacts" />
+            <End Role="reservation" EntitySet="reservations" />
+          </AssociationSet>
+          <FunctionImport Name="SearchContact" EntitySet="contacts" ReturnType="Collection(mijemModel.contact)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_alterdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_creatediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="version" Mode="In" Type="Int32" />
+            <Parameter Name="definition" Mode="In" Type="Binary" />
+          </FunctionImport>
+          <FunctionImport Name="sp_dropdiagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagramdefinition" ReturnType="Collection(mijemModel.sp_helpdiagramdefinition_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_helpdiagrams" ReturnType="Collection(mijemModel.sp_helpdiagrams_Result)">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="sp_renamediagram">
+            <Parameter Name="diagramname" Mode="In" Type="String" />
+            <Parameter Name="owner_id" Mode="In" Type="Int32" />
+            <Parameter Name="new_diagramname" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_upgraddiagrams" />
+          <FunctionImport Name="SearchContact_sp" ReturnType="Collection(mijemModel.SearchContact_Result)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_searchContact" ReturnType="Collection(mijemModel.sp_searchContact_Result)">
+          <Parameter Name="name" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+        <ComplexType Name="sp_helpdiagramdefinition_Result">
+          <Property Type="Int32" Name="version" Nullable="true" />
+          <Property Type="Binary" Name="definition" Nullable="true" />
+        </ComplexType>
+        <ComplexType Name="sp_helpdiagrams_Result">
+          <Property Type="String" Name="Database" Nullable="true" MaxLength="128" />
+          <Property Type="String" Name="Name" Nullable="false" MaxLength="128" />
+          <Property Type="Int32" Name="ID" Nullable="false" />
+          <Property Type="String" Name="Owner" Nullable="true" MaxLength="128" />
+          <Property Type="Int32" Name="OwnerID" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="SearchContact_Result">
+          <Property Type="String" Name="name" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="16" />
+          <Property Type="DateTime" Name="birth_date" Nullable="false" />
+        </ComplexType>
+        <ComplexType Name="sp_searchContact_Result">
+          <Property Type="Int32" Name="contact_id" Nullable="false" />
+          <Property Type="String" Name="name" Nullable="false" MaxLength="30" />
+          <Property Type="String" Name="phone" Nullable="true" MaxLength="16" />
+          <Property Type="DateTime" Name="birth_date" Nullable="false" />
+          <Property Type="Int32" Name="contact_type_id" Nullable="false" />
+          <Property Type="Int32" Name="contact_type_id1" Nullable="false" />
+          <Property Type="String" Name="type_of_contact" Nullable="false" MaxLength="30" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="mijemModelStoreContainer" CdmEntityContainer="mijemEntities">
+          <EntitySetMapping Name="contacts">
+            <EntityTypeMapping TypeName="mijemModel.contact">
+              <MappingFragment StoreEntitySet="contact">
+                <ScalarProperty Name="contact_id" ColumnName="contact_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+                <ScalarProperty Name="contact_type_id" ColumnName="contact_type_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="contact_type">
+            <EntityTypeMapping TypeName="mijemModel.contact_type">
+              <MappingFragment StoreEntitySet="contact_type">
+                <ScalarProperty Name="contact_type_id" ColumnName="contact_type_id" />
+                <ScalarProperty Name="type_of_contact" ColumnName="type_of_contact" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="reservations">
+            <EntityTypeMapping TypeName="mijemModel.reservation">
+              <MappingFragment StoreEntitySet="reservation">
+                <ScalarProperty Name="description" ColumnName="description" />
+                <ScalarProperty Name="reservation_id" ColumnName="reservation_id" />
+                <ScalarProperty Name="reservation_date" ColumnName="reservation_date" />
+                <ScalarProperty Name="contact_id" ColumnName="contact_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sysdiagrams">
+            <EntityTypeMapping TypeName="mijemModel.sysdiagram">
+              <MappingFragment StoreEntitySet="sysdiagrams">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="SearchContact" FunctionName="mijemModel.Store.SearchContact" />
+          <FunctionImportMapping FunctionImportName="sp_alterdiagram" FunctionName="mijemModel.Store.sp_alterdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_creatediagram" FunctionName="mijemModel.Store.sp_creatediagram" />
+          <FunctionImportMapping FunctionImportName="sp_dropdiagram" FunctionName="mijemModel.Store.sp_dropdiagram" />
+          <FunctionImportMapping FunctionImportName="sp_helpdiagramdefinition" FunctionName="mijemModel.Store.sp_helpdiagramdefinition">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="mijemModel.sp_helpdiagramdefinition_Result">
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="definition" ColumnName="definition" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_helpdiagrams" FunctionName="mijemModel.Store.sp_helpdiagrams">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="mijemModel.sp_helpdiagrams_Result">
+                <ScalarProperty Name="Database" ColumnName="Database" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+                <ScalarProperty Name="Owner" ColumnName="Owner" />
+                <ScalarProperty Name="OwnerID" ColumnName="OwnerID" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_renamediagram" FunctionName="mijemModel.Store.sp_renamediagram" />
+          <FunctionImportMapping FunctionImportName="sp_upgraddiagrams" FunctionName="mijemModel.Store.sp_upgraddiagrams" />
+          <FunctionImportMapping FunctionImportName="SearchContact_sp" FunctionName="mijemModel.Store.SearchContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="mijemModel.SearchContact_Result">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="sp_searchContact" FunctionName="mijemModel.Store.SearchContact">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="mijemModel.sp_searchContact_Result">
+                <ScalarProperty Name="contact_id" ColumnName="contact_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="phone" ColumnName="phone" />
+                <ScalarProperty Name="birth_date" ColumnName="birth_date" />
+                <ScalarProperty Name="contact_type_id" ColumnName="contact_type_id" />
+                <ScalarProperty Name="contact_type_id1" ColumnName="contact_type_id1" />
+                <ScalarProperty Name="type_of_contact" ColumnName="type_of_contact" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="True" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
