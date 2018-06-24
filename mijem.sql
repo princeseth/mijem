@@ -29,7 +29,11 @@ CREATE TABLE [contact_type] (
 ); 
 
 
+--Populate Contact Type table
 
+INSERT INTO [dbo].[contact_type] ([type_of_contact])  VALUES ('Contact Type 1');
+INSERT INTO [dbo].[contact_type] ([type_of_contact])  VALUES ('Contact Type 2');
+INSERT INTO [dbo].[contact_type] ([type_of_contact])  VALUES ('Contact Type 3');
 
 
 --Stored Procedure for Contact Search
