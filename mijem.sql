@@ -1,3 +1,5 @@
+CREATE database mijem;
+
 USE [mijem]
 GO
 
