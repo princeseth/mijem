@@ -4,15 +4,14 @@
 1. Visual Studio 2017
    Entity Framework (4.7), MVC 5
 2. MSSQL Server 2012
-
+3. jQuery, Html , rajor html, css
 # Approach:
 Database First approach has been used to build the Entity Model related to table and relationship between them. 
 
 # Description:
-Application starts with index.chtml of Reservation views, which will display list of Reservation
+Application starts with index.chtml of Reservation views, which will display list of Reservation. Here, reservation can be edit or delete.
+Create Reservation button is given on this page, which will direct you to Creat Contact/Reservation page. 
 
-
-Frontend has been developed using jQuery, Html , rajor html 
 
 # Steps to set up the Project
 
