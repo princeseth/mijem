@@ -1,14 +1,45 @@
 USE [mijem]
 GO
 
-/****** Object:  StoredProcedure [dbo].[SearchContact]    Script Date: 22-Jun-18 4:47:52 AM ******/
+
+-- Includes reservation details
+CREATE TABLE [reservation] ( 
+    [reservation_id] INT IDENTITY (1, 1) NOT NULL, 
+    [description] [varchar](max) NULL,
+	[reservation_date] [datetime] NULL,
+	[contact_id] INT FOREIGN KEY REFERENCES contact(contact_id) NOT NULL,
+    PRIMARY KEY ([reservation_id] ASC) 
+); 
+
+--Includes contact details
+CREATE TABLE [contact] ( 
+    [contact_id] INT IDENTITY (1, 1) NOT NULL, 
+    [name] NVARCHAR(30) NOT NULL,
+	[phone] VARCHAR(16),
+	[birth_date] DATE NOT NULL,	
+	[contact_type_id] INT FOREIGN KEY REFERENCES contact_type(contact_type_id) NOT NULL,
+    PRIMARY KEY ([contact_id] ASC) 
+); 
+
+--Type of contacts
+CREATE TABLE [contact_type] ( 
+    [contact_type_id] INT IDENTITY (1, 1) NOT NULL, 
+    [type_of_contact] VARCHAR(30) NOT NULL, 
+    PRIMARY KEY ([contact_type_id] ASC) 
+); 
+
+
+
+
+
+--Stored Procedure for Contact Search
 SET ANSI_NULLS ON
 GO
 
 SET QUOTED_IDENTIFIER ON
 GO
 
---SearchContact '', ''
+--SearchContact 
 CREATE PROCEDURE [dbo].[SearchContact]
 (
     @name        varchar(30)
